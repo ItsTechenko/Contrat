@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrat BDSM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            color: #d4af37;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Falling particles */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.3);
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 60px 40px;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative borders */
+        .page::before,
+        .page::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            height: 1px;
+            left: 10%;
+            right: 10%;
+        }
+
+        .page::before {
+            top: 30px;
+        }
+
+        .page::after {
+            bottom: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b0000, transparent);
+        }
+
+        .intro-text {
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: rgba(139, 0, 0, 0.1);
+            border-left: 3px solid #8b0000;
+            border-right: 3px solid #8b0000;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .article {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .article:hover::before {
+            left: 100%;
+        }
+
+        .article:hover {
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            transform: translateX(5px);
+        }
+
+        .article-number {
+            font-weight: bold;
+            color: #8b0000;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .article-content {
+            line-height: 1.8;
+            color: #d4af37;
+            padding-left: 20px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #8b0000, #5a0000);
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            padding: 15px 40px;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            font-family: 'Georgia', serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn:hover {
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            color: #d4af37;
+            font-size: 1em;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+        }
+
+        .signature-section {
+            margin-top: 80px;
+            padding: 40px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 2px solid #8b0000;
+            border-radius: 10px;
+        }
+
+        .signature-line {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .signature-label {
+            color: #8b0000;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .date-info {
+            text-align: center;
+            margin-top: 40px;
+            font-style: italic;
+            color: #d4af37;
+            font-size: 1.1em;
+        }
+
+        /* Chain decoration */
+        .chain {
+            position: fixed;
+            top: 0;
+            left: 20px;
+            width: 3px;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                #d4af37,
+                #d4af37 20px,
+                transparent 20px,
+                transparent 30px
+            );
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .chain.right {
+            left: auto;
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 40px 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+                letter-spacing: 4px;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                bottom: 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 12px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chain"></div>
+    <div class="chain right"></div>
+    <div class="page-indicator" id="pageIndicator">Page 1 / 7</div>
+
+    <div class="container">
+        <!-- Page 1: Titre et Introduction -->
+        <div class="page active" id="page1">
+            <h1>Contrat BDSM</h1>
+            <div class="intro-text">
+                "Ce contrat n'a aucune portée juridique et légale. Il attrait à un échange entre trois personnes consentantes afin d'établir des règles durables et fixant les limites claires pour protéger les deux partis. Il ne pourra donc pas être utilisé afin de nuire à l'autre parti."
+            </div>
+        </div>
+
+        <!-- Page 2: Règles Communes (Partie 1) -->
+        <div class="page" id="page2">
+            <h2>Règles Communes</h2>
+            
+            <div class="article">
+                <div class="article-number">1.1</div>
+                <div class="article-content">
+                    Le contrat peut être à tout moment modifié, le but de la modification/réédition est d'instaurer un climat de confiance et non pas un moyen de se défaire de ses obligations.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.2</div>
+                <div class="article-content">
+                    Aucun mensonge de la part des deux parties ne sera toléré, ainsi que toute forme de moquerie voulant être prise au premier degré.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.3</div>
+                <div class="article-content">
+                    Le contrat BDSM ne peut être modifié qu'en accord des deux parties.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.4</div>
+                <div class="article-content">
+                    Cet accord prend effet à compter de la date de la signature par les deux parties.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.5</div>
+                <div class="article-content">
+                    Toute séance de jeux, devrait immédiatement s'arrêter si un SafeWord est énoncé lors de séance.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.6</div>
+                <div class="article-content">
+                    Le respect des deux parties doit être constant et ne doit en aucun cas être écarté.
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Règles Communes (Partie 2) -->
+        <div class="page" id="page3">
+            <h2>Règles Communes (Suite)</h2>
+
+            <div class="article">
+                <div class="article-number">1.7</div>
+                <div class="article-content">
+                    Toute relation BDSM en dehors du contrat devra être discuté et validé par les deux partis.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.8</div>
+                <div class="article-content">
+                    Les deux parties s'engagent à être la priorité de l'autre partie et que si l'une des parties s'absente, l'autre partie doit être au courant de la date de retour et du motif d'absence.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.9</div>
+                <div class="article-content">
+                    Les deux parties s'engagent à respecter coûte que coûte les limites de l'autre partie.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.10</div>
+                <div class="article-content">
+                    La relation entre les deux parties doit être unique, aucune autre personne ne doit intervenir dans la relation, sauf en cas de discussion des deux parties.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">1.11</div>
+                <div class="article-content">
+                    Avant toute nouvelle expérience, les deux parties doivent se mettre d'accord et approuvé d'une manière quelconque l'expérience, si l'une des deux parties refusent, alors l'expérience ne doit être effectué sous aucun prétexte.
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: SafeWord -->
+        <div class="page" id="page4">
+            <h2>SafeWord</h2>
+
+            <div class="article">
+                <div class="article-number">2.1</div>
+                <div class="article-content">
+                    Un SafeWord est prévu pour être utilisé lors des séances. Si le soumis ne peut parler, un SafeWord alternatif est défini.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">2.2</div>
+                <div class="article-content">
+                    S'il est employé, le Dominant interrompt la séance immédiatement, fait retirer les liens (si il y'en à) qui retient le soumis.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">2.3</div>
+                <div class="article-content">
+                    Si la soumise l'utilise, elle doit être en mesure d'expliquer pourquoi.
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Soumise (Partie 1) -->
+        <div class="page" id="page5">
+            <h2>Soumise</h2>
+
+            <div class="article">
+                <div class="article-number">3.1</div>
+                <div class="article-content">
+                    La soumise comprend et accepte la Domination du Dominant et devient sa propriété exclusive.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.2</div>
+                <div class="article-content">
+                    La soumise doit le respect total envers son Dominant ne doit en aucun cas y manquer de quelconque manière qu'il soit (insulte, menace, chantage…).
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.3</div>
+                <div class="article-content">
+                    La soumise doit se confier au Dominant sur chaque domaine, et ne doit rien lui cacher.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.4</div>
+                <div class="article-content">
+                    La soumise ne doit se faire du plaisir sexuelle personnelle via une masturbation sans avoir au préalable reçu l'autorisation du Dominant sous peine de punition.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.5</div>
+                <div class="article-content">
+                    La soumise ne doit en aucun cas jouir sans avoir au préalable reçu l'autorisation du Dominant sous peine de punition.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.6</div>
+                <div class="article-content">
+                    Tout manquement de respect envers le Dominant se verra automatiquement suivis d'une punition non négociable et variée en fonction du manque de respect.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.7</div>
+                <div class="article-content">
+                    La soumise ne doit en aucun cas chercher une autre personne pouvant remplacer le Dominant sans autorisation et validation.
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: Soumise (Partie 2) & Dominant -->
+        <div class="page" id="page6">
+            <h2>Soumise (Suite)</h2>
+
+            <div class="article">
+                <div class="article-number">3.8</div>
+                <div class="article-content">
+                    La soumise doit savoir faire plaisir aux Dominant, de toute manière qu'elle soit (cadeaux, mots doux, sexuelle, etc…) dans le respect des règles et limites fixées dans le contrat.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.9</div>
+                <div class="article-content">
+                    La soumise doit demander l'autorisation pour toucher le corps du Dominant, le corps du Dominant ne lui étant pas donné tout le temps.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.10</div>
+                <div class="article-content">
+                    Le corps de la soumise doit être entièrement donné au Dominant, si la soumise à un complexe il doit être dit lors de la signature du contrat pour que le Dominant y soit informé.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.11</div>
+                <div class="article-content">
+                    La soumise accepte de répondre au fantasme du Dominant dans le respect des limites de la soumise ainsi que du Dominant.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.12</div>
+                <div class="article-content">
+                    La soumise doit communiquer aux Dominant chaque problème de santé (Physique, mental ou autre) dès les premiers symptômes.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.13</div>
+                <div class="article-content">
+                    La soumise peut montrer son affection envers le Dominant de différentes manières (Calin, bisou, caresse à non caractère sexuelle).
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">3.14</div>
+                <div class="article-content">
+                    La soumise doit traiter le Dominant comme sa priorité et doit donc agir en conséquence.
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Dominant & Signatures -->
+        <div class="page" id="page7">
+            <h2>Dominant</h2>
+
+            <div class="article">
+                <div class="article-number">4.1</div>
+                <div class="article-content">
+                    En sont statut de Dominant, il s'engage à effectuer des actions sans but nocif pour la soumise, dans ces termes il s'évertue à prodiguer des gestes dans le bien de la soumise et le sien.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">4.2</div>
+                <div class="article-content">
+                    En respect de l'article précédent, il à autorité pour faire passer ses propres besoins en priorité.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">4.3</div>
+                <div class="article-content">
+                    La propriété de soumise étant sienne, le Dominant se doit de veiller au maintien de l'état de santé en tout point de la soumise.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">4.4</div>
+                <div class="article-content">
+                    Le Dominant s'engage en signant ce contrat, à tout mettre en œuvre pour que la soumise soit traité du mieux qu'elle le désire, par des moyens financiers, affectifs et autre forme de traitement.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">4.5</div>
+                <div class="article-content">
+                    Le Dominant se doit de vérifier que la soumise ne manque de rien en tout point pour son bien être.
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">4.6</div>
+                <div class="article-content">
+                    Le Dominant doit traiter la soumise avec le plus grand soin possible (Mots doux, aftercare, moment de complicité etc).
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-number">4.7</div>
+                <div class="article-content">
+                    Le Dominant se réserve le droit de gérer de A à Z la sexualité de la soumise.
+                </div>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-line">
+                    <div class="signature-label">Signature électronique du Dominant :</div>
+                    <div style="height: 60px; border-bottom: 2px dashed #d4af37; margin-top: 20px;"></div>
+                </div>
+
+                <div class="signature-line">
+                    <div class="signature-label">Signature électronique de la Soumise :</div>
+                    <div style="height: 60px; border-bottom: 2px dashed #d4af37; margin-top: 20px;"></div>
+                </div>
+
+                <div class="date-info">
+                    Le contrat prend effet dès les signatures mises en œuvre…
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changePage(-1)">◄ Précédent</button>
+        <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Suivant ►</button>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 7;
+
+        // Create falling particles
+        function createParticles() {
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            
+            if (newPage < 1 || newPage > totalPages) return;
+            
+            document.getElementById('page' + currentPage).classList.remove('active');
+            currentPage = newPage;
+            document.getElementById('page' + currentPage).classList.add('active');
+            
+            updateNavigation();
+            window.scrollTo(0, 0);
+        }
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+            document.getElementById('pageIndicator').textContent = `Page ${currentPage} / ${totalPages}`;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changePage(-1);
+            if (e.key === 'ArrowRight') changePage(1);
+        });
+
+        // Initialize
+        createParticles();
+        updateNavigation();
+    </script>
+</body>
+</html>
